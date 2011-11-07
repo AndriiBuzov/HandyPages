@@ -1,0 +1,30 @@
+body
+{
+	min-width: 75px;
+    text-align: center;
+}
+
+ul.menu
+{
+    position: relative;
+    padding: 0px; 
+    margin: 0px;
+	list-style-type: none;
+    float: right; 
+}
+
+ul.menu li 
+{
+	display: inline;
+	padding: 0px; 
+}
+
+ul.menu li img
+{
+	cursor: pointer;
+}
+
+#links {
+    display: inline-block;
+    text-align:center;
+}

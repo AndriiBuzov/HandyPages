@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <title>Options</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="css/overcast/jquery-ui-1.8.16.custom.css" rel="stylesheet" type="text/css" />
+        <link href="css/options.css" rel="stylesheet" type="text/css" />
+        <link href="js/jNice/jNice.css" rel="stylesheet" type="text/css" />
+        <script src="js/jquery-1.6.2.min.js"></script>
+        <script src="js/jquery-ui-1.8.16.custom.min.js"></script>
+        <script src="js/jNice/jquery.jNice.js"></script>
+        <script src="common.js"></script>
+        <script src="options.js"></script>
+        <script type="text/javascript">
+            $(loadOptions);
+            $(function() {
+                $("#addRow").button({
+                    icons: {
+                        primary: "ui-icon-plus"
+                    },
+                    text: false
+                });
+                $("#ctrlBtnPos").button();
+                $("#wrapTitles").button();
+            });
+        </script>
+    </head>
+    <body>
+        <div id="options">
+            <table id="linksTable">
+                <tr>
+                    <td align="center"><b>Title</b></td>
+                    <td align="center"><b>URL</b></td>
+                    <td><button id="addRow" title="Add row" onclick="addEmptyTableRow()">+</button></td>
+                </tr>
+            </table>
+            <div style="margin-top: 10px; margin-bottom: 10px;">
+                <span id="toolbar" class="ui-widget-header ui-corner-all" style="padding: 10px 4px;">
+                    <input type="checkbox" id="ctrlBtnPos"/><label for="ctrlBtnPos">Control buttons at the top</label>
+                    <input type="checkbox" id="wrapTitles"/><label for="wrapTitles">Wrap long titles</label>
+                </span>
+            </div>
+            <div>
+                <button onclick="saveOptions()">Save</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button onclick="closeWindow()">Cancel</button>
+            </div>
+            <center>
+                <div class="ui-widget" id="status" style="display:none; width: 150px;">
+                    <div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;"> 
+                        <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                        <strong>Options saved</strong></p>
+                    </div>
+                </div>
+            </center>
+        </div>
+    </body>
+</html>

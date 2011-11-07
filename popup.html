@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="css/overcast/jquery-ui-1.8.16.custom.css" rel="stylesheet" type="text/css" />
+        <link href="css/popup.css" rel="stylesheet" type="text/css" />
+        <script src="js/jquery-1.6.2.min.js"></script>
+        <script src="js/jquery-ui-1.8.16.custom.min.js"></script>
+        <script src="common.js"></script>
+        <script src="popup.js"></script>
+        <script type="text/javascript">
+            window.addEventListener("load", windowLoaded, false);
+            function windowLoaded() {
+              chrome.tabs.getSelected(null, function(tab) {
+                var a = document.createElement('a');
+                a.href = tab.url;
+                $("#currentUrl").val(a.protocol + "//" + a.hostname + ((a.port == 0) ? "" : ":" + a.port));
+                $("#currentUrl").hide();
+                $("#currentIndex").val(tab.index);
+                $("#currentIndex").hide();
+              });
+            }
+            $(function() {
+                $( "#btn_options" ).button({
+                    icons: {
+                        primary: "ui-icon-wrench"
+                    },
+                    text: false
+                });
+                $( "#btn_close" ).button({
+                    icons: {
+                        primary: "ui-icon-circle-close"
+                    },
+                    text: false
+                });
+            });
+            setTimeout(function() {
+                init();
+            }, 25);
+        </script>
+    </head>
+    <body>
+        <div id="links"></div>
+        <ul class="menu" id="ctrlPanel">
+            <li><button id="btn_options" onclick="showOptions();">Options</button></li>
+            <li><button id="btn_close" onclick="closeWindow();">Close</button></li>
+        </ul>
+        <p id="currentUrl"></p>
+        <p id="currentIndex"></p>
+    </body>
+</html>
