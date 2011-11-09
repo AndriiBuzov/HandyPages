@@ -13,3 +13,28 @@ body, html {
     text-align: center;
 }
 
+.jNiceInputWrapper {
+	background: transparent url(elements/input.gif) no-repeat left top;
+	float:left;
+}
+
+.jNiceInputInner {
+	background: transparent url(elements/input.gif) no-repeat right top;
+	padding: 2px 4px 2px 0;
+	margin: 0 0 0 4px;
+}
+
+.jNiceInputInner input {
+	font-family:Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color:#404040;	
+	line-height: 17px;
+	height: 17px;
+	*line-height: 15px;/* IE Hacks */
+	*height: 15px;/* IE Hacks */
+	vertical-align:middle;padding:0;margin:0;background:none;border:none;outline:none;
+}
+
+.jNiceInputWrapper_hover { background-position: left bottom; }
+.jNiceInputWrapper_hover .jNiceInputInner { background-position: right bottom; }
+

@@ -36,3 +36,18 @@ function closeWindow()
 	window.close();
 }
 
+(function($){
+	$.fn.jNiceTextInputInit = function(){
+		if ($(this).parents('.jNiceInputWrapper').length == 0)
+        {
+            var $input = $(this).addClass('jNiceInput').wrap('<div class="jNiceInputWrapper"><div class="jNiceInputInner"></div></div>');
+            var $wrapper = $input.parents('.jNiceInputWrapper');
+            $input.focus(function(){ 
+                $wrapper.addClass('jNiceInputWrapper_hover');
+            }).blur(function(){
+                $wrapper.removeClass('jNiceInputWrapper_hover');
+            });
+        }
+	};
+})(jQuery);
+

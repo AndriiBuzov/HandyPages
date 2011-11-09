@@ -6,14 +6,13 @@ function saveProperty(property, value)
 function saveOptions()
 {
     // saving links
-    var count = $(".linkrow").length;
     var links = new Array();
     var linksCount = 0;
-    var title, url;
-    for(var i = 0; i < count; i++)
-    {
-        title = $("#title" + i).val().trim();
-        url = $("#url" + i).val().trim();
+    var title, url; 
+    var rows = $(".linkrow");
+    rows.each( function() {
+        title = getTitleFromRow($(this));
+        url = getUrlFromRow($(this));
         if (title != "" && url != "") 
         {
             links[linksCount] = new Array();
@@ -21,7 +20,8 @@ function saveOptions()
             links[linksCount][1] = url;
             linksCount++;
         }
-    }
+    });
+    
     saveProperty("pagesList", linksToString(links));
     
     //saving control buttons position
@@ -48,26 +48,23 @@ function linksToString(links)
     return res;
 }
 
-function buildTableRow(title, url, index)
+function buildTableRow(title, url)
 {
-    var _linkrow = "linkrow" + index;
-    var _title = "title" + index;
-    var _url = "url" + index;
-    var row = $("<tr />").addClass("linkrow").attr("id", "linkrow" + index)
+    var row = $("<tr />").addClass("linkrow")
         .append(
             $("<td />").append(
-                $("<input />").attr("type","text").attr("size",30).attr("id","title" + index).attr("value",title)
+                $("<input />").attr("type","text").attr("size",30).attr("id","title").attr("value",title)
             )
         )
         .append(
             $("<td />").append(
-                $("<input />").attr("type","text").attr("size",50).attr("id","url" + index).attr("value",url)
+                $("<input />").attr("type","text").attr("size",50).attr("id","url").attr("value",url)
             )
         )
         .append(
             $("<td />").append(
                 $("<button>x</button>").attr("title","Remove row").click(function() {
-                    removeTableRow("#linkrow" + index);
+                    $(this).parents('tr.linkrow:first').remove();
                 })
                 .button({
                     icons: {
@@ -76,26 +73,90 @@ function buildTableRow(title, url, index)
                     text: false
                 })
             )
+        )
+        .append(
+            $("<td />").append(
+                $("<button>x</button>").attr("title","Move up").click(function() {
+                    var rowToMove = $(this).parents('tr.linkrow:first');
+                    var prev = rowToMove.prev('tr.linkrow')
+                    if (prev.length == 1) 
+                    { 
+                        swapRows(rowToMove, prev);
+                    }
+                })
+                .button({
+                    icons: {
+                        primary: "ui-icon-triangle-1-n"
+                    },
+                    text: false
+                })
+            )
+        )
+        .append(
+            $("<td />").append(
+                $("<button>x</button>").attr("title","Move down").click(function() {
+                    var rowToMove = $(this).parents('tr.linkrow:first');
+                    var next = rowToMove.next('tr.linkrow')
+                    if (next.length == 1) 
+                    { 
+                        swapRows(rowToMove, next); 
+                    }
+                })
+                .button({
+                    icons: {
+                        primary: "ui-icon-triangle-1-s"
+                    },
+                    text: false
+                })
+            )
         );
     return row;
 }
 
+function swapRows(this_row, other_row)
+{  
+    var tmp = getTitleFromRow(this_row);
+    setTitleForRow(this_row, getTitleFromRow(other_row));
+    setTitleForRow(other_row, tmp);
+    
+    tmp = getUrlFromRow(this_row);
+    setUrlForRow(this_row, getUrlFromRow(other_row));
+    setUrlForRow(other_row, tmp);
+}
+
+function getUrlFromRow(row)
+{
+    return row.find('input[id^="url"]:first').val().trim();
+}
+
+function getTitleFromRow(row)
+{
+    return row.find('input[id^="title"]:first').val().trim();
+}
+
+function setUrlForRow(row, url)
+{
+    row.find('input[id^="url"]:first').val(url);
+}
+
+function setTitleForRow(row, title)
+{
+    row.find('input[id^="title"]:first').val(title);
+}
+
 function addTableRow(title, url)
 {
-    var newIndex = $(".linkrow").length;
-    $("#linksTable").append(buildTableRow(title, url, newIndex));
-    $("#title" + newIndex).jNiceTextInput();
-    $("#url" + newIndex).jNiceTextInput();
+    $("#linksTable").append(buildTableRow(title, url));
+    // style text inputs
+    $(".linkrow").each( function() {
+        $(this).find('input[id^="title"]:first').jNiceTextInputInit();
+        $(this).find('input[id^="url"]:first').jNiceTextInputInit();
+    });
 }
 
 function addEmptyTableRow()
 {
     addTableRow("","");
-}
-
-function removeTableRow(rowID)
-{
-    $(rowID).remove();
 }
 
 function loadOptions()
@@ -105,6 +166,7 @@ function loadOptions()
     {
         addTableRow(links[i][0], links[i][1]);
     }
+    
     $("button").button();
     
     var wrapTitles = readProperty("wrapTitles","no");
