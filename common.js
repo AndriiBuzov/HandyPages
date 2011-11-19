@@ -7,28 +7,9 @@ function readProperty(property, defValue)
 	return localStorage[property];
 }
 
-function getDefaultLinks()
+function getDefaultOptions()
 {
-   return "Page1,/folder1/page1.html;Page2,/page2.html";
-}
-
-function linksToArray(links)
-{
-    var arr = links.split(";");
-    var res = new Array();
-    var linksCount = 0;
-    for(var i = 0; i < arr.length; i++)
-    {
-        var row = arr[i].split(",");
-        if (row.length == 2)
-        {
-            res[linksCount] = new Array();
-            res[linksCount][0] = decodeURIComponent(row[0]);
-            res[linksCount][1] = decodeURIComponent(row[1]);
-            linksCount++;
-        }
-    }
-    return res;
+    return '{"pagesList":[{"url":"folder1/page1.html","title":"Page 1"},{"url":"/ahother_folder/page2.php?act=show","title":"Page 2"},{"url":"/page.html","title":"Page 3"}],"ctrlBtnPos":"bottom","wrapTitles":"no"}';
 }
 
 function closeWindow()

@@ -3,9 +3,8 @@ function saveProperty(property, value)
 	localStorage[property] = value;
 }
 
-function saveOptions()
+function getOptionsAsJSON()
 {
-    // saving links
     var links = new Array();
     var linksCount = 0;
     var title, url; 
@@ -15,37 +14,29 @@ function saveOptions()
         url = getUrlFromRow($(this));
         if (title != "" && url != "") 
         {
-            links[linksCount] = new Array();
-            links[linksCount][0] = title;
-            links[linksCount][1] = url;
+            links[linksCount] = { title: title, url: url };
             linksCount++;
         }
     });
-    
-    saveProperty("pagesList", linksToString(links));
-    
-    //saving control buttons position
     var ctrlBtnPos = $("#ctrlBtnPos").attr("checked") === "checked" ? "top" : "bottom";
-    saveProperty("ctrlBtnPos", ctrlBtnPos);
-    
-    //saving wrap titles parameter
     var wrapTitles = $("#wrapTitles").attr("checked") === "checked" ? "yes" : "no";
-    saveProperty("wrapTitles", wrapTitles);
+    
+    var opt = {
+        pagesList: links,
+        ctrlBtnPos: ctrlBtnPos,
+        wrapTitles: wrapTitles
+    }
+    return $.toJSON(opt);
+}
+
+function saveOptions()
+{
+    saveProperty("options", getOptionsAsJSON());
     
     $("#status").show();
     setTimeout(function() {
         $("#status").hide();
     }, 1000);
-}
-
-function linksToString(links)
-{
-    var res = "";
-    for(var i = 0; i < links.length; i++)
-    {
-        res = res + ";" + encodeURIComponent(links[i][0]) + "," + encodeURIComponent(links[i][1])
-    }
-    return res;
 }
 
 function buildTableRow(title, url)
@@ -161,22 +152,19 @@ function addEmptyTableRow()
 
 function loadOptions()
 {
-    var links = linksToArray(readProperty("pagesList",getDefaultLinks()));
-    for(var i = 0; i < links.length; i++)
+    var opt = $.secureEvalJSON(readProperty("options",getDefaultOptions()));
+    for(var i = 0; i < opt.pagesList.length; i++)
     {
-        addTableRow(links[i][0], links[i][1]);
+        addTableRow(opt.pagesList[i].title, opt.pagesList[i].url);
     }
     
     $("button").button();
     
-    var wrapTitles = readProperty("wrapTitles","no");
-    if (wrapTitles === "yes") {
+    if (opt.wrapTitles === "yes") {
         $("#wrapTitles").attr("checked", "checked");
     }
     
-    var ctrlBtnPos = readProperty("ctrlBtnPos","bottom");
-    if (ctrlBtnPos === "top") {
+    if (opt.ctrlBtnPos === "top") {
         $("#ctrlBtnPos").attr("checked", "checked");
     }
 }
-
