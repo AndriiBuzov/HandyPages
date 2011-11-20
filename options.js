@@ -153,6 +153,12 @@ function addEmptyTableRow()
 function loadOptions()
 {
     var opt = $.secureEvalJSON(readProperty("options",getDefaultOptions()));
+    processOptions(opt);
+}
+
+function processOptions(opt) 
+{
+    $("#linksTable").empty();
     for(var i = 0; i < opt.pagesList.length; i++)
     {
         addTableRow(opt.pagesList[i].title, opt.pagesList[i].url);
@@ -162,9 +168,54 @@ function loadOptions()
     
     if (opt.wrapTitles === "yes") {
         $("#wrapTitles").attr("checked", "checked");
+    } else {
+        $("#wrapTitles").removeAttr("checked");
     }
+    $("#wrapTitles").button("refresh");
     
     if (opt.ctrlBtnPos === "top") {
         $("#ctrlBtnPos").attr("checked", "checked");
+    } else {
+        $("#ctrlBtnPos").removeAttr("checked");
     }
+    $("#ctrlBtnPos").button("refresh");
+}
+
+function hideExportImportBlock()
+{
+    $("#exportLabel").hide();
+    $("#importLabel").hide();
+    $("#exportImportField").val("");
+    $("#exportImportBlock").hide();
+    $("#exportBtn").removeAttr("disabled");
+    $("#importBtn").removeAttr("disabled");
+}
+
+function exportSettings()
+{
+    hideExportImportBlock();
+    $("#exportImportField").text(getOptionsAsJSON());
+    $("#exportImportBlock").show();
+    $("#exportLabel").show();
+    $("#importBtn").attr("disabled","disabled");
+}
+
+function importSettings()
+{  
+    hideExportImportBlock();
+    $("#exportBtn").attr("disabled","disabled");
+    $("#exportImportBlock").show();
+    $("#importLabel").show();
+}
+
+function startImport()
+{
+    var raw_opt = $("#exportImportField").val();
+    try {
+        var opt = $.secureEvalJSON(raw_opt);
+        processOptions(opt);
+    } catch (ex) {
+        alert ("Please, paste exported settings in JSON format into the import field.");
+    }
+    hideExportImportBlock();
 }
