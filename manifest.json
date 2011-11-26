@@ -1,6 +1,6 @@
 {
   "name": "Handy Pages",
-  "version": "0.1",
+  "version": "0.2",
   "description": "Provides an easy-way navigation to configurable list of user pages on server.",
   "icons": {
       "16": "icons/icon_16.png",

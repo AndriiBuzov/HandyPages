@@ -13,28 +13,15 @@ body, html {
     text-align: center;
 }
 
-.jNiceInputWrapper {
-	background: transparent url(elements/input.gif) no-repeat left top;
-	float:left;
-}
-
-.jNiceInputInner {
-	background: transparent url(elements/input.gif) no-repeat right top;
-	padding: 2px 4px 2px 0;
-	margin: 0 0 0 4px;
-}
-
-.jNiceInputInner input {
-	font-family:Arial, Helvetica, sans-serif;
+.custInput {
+    background:#fff;
+    border-bottom:1px solid #ddd;
+    border-left:1px solid #c3c3c3;
+    border-right:1px solid #c3c3c3;
+    border-top:1px solid #7c7c7c;
+    margin:0;
+    padding:5px 5px;    
+    font-family:Verdana;
 	font-size: 12px;
-	color:#404040;	
-	line-height: 17px;
-	height: 17px;
-	*line-height: 15px;/* IE Hacks */
-	*height: 15px;/* IE Hacks */
-	vertical-align:middle;padding:0;margin:0;background:none;border:none;outline:none;
+	color:#404040;
 }
-
-.jNiceInputWrapper_hover { background-position: left bottom; }
-.jNiceInputWrapper_hover .jNiceInputInner { background-position: right bottom; }
-

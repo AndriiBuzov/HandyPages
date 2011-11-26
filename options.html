@@ -43,27 +43,22 @@
             </table>
             <div style="margin-top: 10px; margin-bottom: 10px;">
                 <span id="toolbar" class="ui-widget-header ui-corner-all" style="padding: 10px 4px;">
-                    <input type="checkbox" id="ctrlBtnPos"/><label for="ctrlBtnPos">Control buttons at the top</label>
-                    <input type="checkbox" id="wrapTitles"/><label for="wrapTitles">Wrap long titles</label>
+                    <input type="checkbox" id="ctrlBtnPos"/><label for="ctrlBtnPos" title="Show control buttons at the top of the popup window">Control buttons at the top</label>
+                    <input type="checkbox" id="wrapTitles"/><label for="wrapTitles" title="Wrap long button titles in popup window">Wrap long titles</label>
                     <button id="exportBtn" title="Export Settings">Export</button></td>
                     <button id="importBtn" title="Import Settings">Import</button></td>
                 </span>
             </div>
             <div id="exportImportBlock">
                 <div id="exportLabel">Copy this for future import:</div>
-                <div id="importLabel">Paste exported here and press Import button:</div>
-                <textarea id="exportImportField" cols="55" rows="7" class="ui-corner-all"></textarea>
+                <div id="importLabel">Paste exported settings here and press Import button:</div>
+                <textarea id="exportImportField" cols="55" rows="7" class="ui-corner-all custInput"></textarea>
             </div>
             <div>
-                <button onclick="saveOptions()">Save</button>
+                <button onclick="saveOptions()" title="Save options">Save</button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button onclick="closeWindow()">Cancel</button>
+                <button onclick="closeWindow()" title="Cancel & close">Cancel</button>
             </div>
-            <!--
-            <textarea class="ui-widget ui-state-hover ui-corner-all">asdasdasd</textarea>
-            
-            <input type="text" class="ui-state-default ui-corner-all" />
-            -->
             <center>
                 <div class="ui-widget" id="status" style="display:none; width: 150px;">
                     <div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;"> 

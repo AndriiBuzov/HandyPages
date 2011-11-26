@@ -44,12 +44,12 @@ function buildTableRow(title, url)
     var row = $("<tr />").addClass("linkrow")
         .append(
             $("<td />").append(
-                $("<input />").attr("type","text").attr("size",30).attr("id","title").attr("value",title)
+                $("<input />").attr("type","text").attr("size",25).attr("id","title").attr("value",title).addClass("ui-corner-all").addClass("custInput")
             )
         )
         .append(
             $("<td />").append(
-                $("<input />").attr("type","text").attr("size",50).attr("id","url").attr("value",url)
+                $("<input />").attr("type","text").attr("size",50).attr("id","url").attr("value",url).addClass("ui-corner-all").addClass("custInput")
             )
         )
         .append(
@@ -138,11 +138,6 @@ function setTitleForRow(row, title)
 function addTableRow(title, url)
 {
     $("#linksTable").append(buildTableRow(title, url));
-    // style text inputs
-    $(".linkrow").each( function() {
-        $(this).find('input[id^="title"]:first').jNiceTextInputInit();
-        $(this).find('input[id^="url"]:first').jNiceTextInputInit();
-    });
 }
 
 function addEmptyTableRow()
@@ -194,7 +189,7 @@ function hideExportImportBlock()
 function exportSettings()
 {
     hideExportImportBlock();
-    $("#exportImportField").text(getOptionsAsJSON());
+    $("#exportImportField").val(getOptionsAsJSON());
     $("#exportImportBlock").show();
     $("#exportLabel").show();
     $("#importBtn").attr("disabled","disabled");
