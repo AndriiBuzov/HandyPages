@@ -184,6 +184,12 @@ function hideExportImportBlock()
     $("#exportImportBlock").hide();
     $("#exportBtn").removeAttr("disabled");
     $("#importBtn").removeAttr("disabled");
+    $("#importBtn").button("option", {
+          icons: { primary: "ui-icon-circle-arrow-s" }
+    });
+    $("#exportBtn").button("option", {
+            icons: { primary: "ui-icon-circle-arrow-s" }
+    });
 }
 
 function exportSettings()
@@ -193,6 +199,9 @@ function exportSettings()
     $("#exportImportBlock").show();
     $("#exportLabel").show();
     $("#importBtn").attr("disabled","disabled");
+    $("#exportBtn").button("option", {
+            icons: { primary: "ui-icon-circle-arrow-n" }
+    });
 }
 
 function importSettings()
@@ -201,6 +210,9 @@ function importSettings()
     $("#exportBtn").attr("disabled","disabled");
     $("#exportImportBlock").show();
     $("#importLabel").show();
+    $("#importBtn").button("option", {
+            icons: { primary: "ui-icon-circle-arrow-n" }
+    });
 }
 
 function startImport()

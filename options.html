@@ -22,8 +22,12 @@
                 $("#ctrlBtnPos").button();
                 $("#wrapTitles").button();
                 hideExportImportBlock();
-                $("#importBtn").toggle(importSettings, startImport);
-                $("#exportBtn").toggle(exportSettings, hideExportImportBlock);
+                $("#importBtn").button("option", {
+                      icons: { primary: "ui-icon-circle-arrow-s" }})
+                .toggle(importSettings, startImport);
+                $("#exportBtn").button("option", {
+                        icons: { primary: "ui-icon-circle-arrow-s" }})
+                .toggle(exportSettings, hideExportImportBlock);
             });
         </script>
     </head>
