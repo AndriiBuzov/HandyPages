@@ -2,49 +2,46 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="css/overcast/jquery-ui-1.8.16.custom.css" rel="stylesheet" type="text/css" />
+        <link href="css/overcast/jquery-ui-1.10.0.custom.css" rel="stylesheet" type="text/css" />
         <link href="css/popup.css" rel="stylesheet" type="text/css" />
-        <script src="js/jquery-1.6.2.min.js"></script>
-        <script src="js/jquery-ui-1.8.16.custom.min.js"></script>
-        <script src="js/jquery.json-2.3.min.js"></script>
-        <script src="common.js"></script>
-        <script src="popup.js"></script>
-        <script type="text/javascript">
-            window.addEventListener("load", windowLoaded, false);
-            function windowLoaded() {
-              chrome.tabs.getSelected(null, function(tab) {
-                var a = document.createElement('a');
-                a.href = tab.url;
-                $("#currentUrl").val(a.protocol + "//" + a.hostname + ((a.port == 0) ? "" : ":" + a.port));
-                $("#currentUrl").hide();
-                $("#currentIndex").val(tab.index);
-                $("#currentIndex").hide();
-              });
-            }
-            $(function() {
-                $( "#btn_options" ).button({
-                    icons: {
-                        primary: "ui-icon-wrench"
-                    },
-                    text: false
-                });
-                $( "#btn_close" ).button({
-                    icons: {
-                        primary: "ui-icon-circle-close"
-                    },
-                    text: false
-                });
-            });
-            setTimeout(function() {
-                init();
-            }, 25);
-        </script>
+        <script type="text/javascript" src="js/jquery-1.9.0.js"></script>
+        <script type="text/javascript" src="js/jquery-ui-1.10.0.custom.min.js"></script>
+        <script type="text/javascript" src="js/jquery.json-2.4.min.js"></script>
+        <script src="js/purl.js" type="text/javascript"></script>
+        <script src="common.js" type="text/javascript"></script>
+        <script src="popup.js" type="text/javascript"></script>
+        <!--<script type="text/javascript">-->
+            <!--window.addEventListener("load", windowLoaded, false);-->
+            <!--function windowLoaded() {-->
+              <!--chrome.tabs.getSelected(null, function(tab) {-->
+                <!--window.hpUrl = $.url(tab.url);-->
+                <!--window.hpCurrentIndex = tab.index;-->
+              <!--});-->
+            <!--}-->
+            <!--$(function() {-->
+                <!--$( "#btn_options" ).button({-->
+                    <!--icons: {-->
+                        <!--primary: "ui-icon-wrench"-->
+                    <!--},-->
+                    <!--text: false-->
+                <!--});-->
+                <!--$( "#btn_close" ).button({-->
+                    <!--icons: {-->
+                        <!--primary: "ui-icon-circle-close"-->
+                    <!--},-->
+                    <!--text: false-->
+                <!--});-->
+            <!--});-->
+            <!--setTimeout(function() {-->
+                <!--init();-->
+            <!--}, 25);-->
+        <!--</script>-->
     </head>
     <body>
         <div id="links"></div>
         <ul class="menu" id="ctrlPanel">
-            <li><button id="btn_options" onclick="showOptions();">Options</button></li>
-            <li><button id="btn_close" onclick="closeWindow();">Close</button></li>
+            <li><button id="btn_options">Options</button></li>
+            <li><button id="btn_close">Close</button></li>
         </ul>
         <p id="currentUrl"></p>
         <p id="currentIndex"></p>

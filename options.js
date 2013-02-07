@@ -1,3 +1,18 @@
+// hack as .toggle() was removed from jquery 1.9
+(function($) {
+    $.fn.clickToggle = function(func1, func2) {
+        var funcs = [func1, func2];
+        this.data('toggleclicked', 0);
+        this.click(function() {
+            var data = $(this).data();
+            var tc = data.toggleclicked;
+            $.proxy(funcs[tc], this)();
+            data.toggleclicked = (tc + 1) % 2;
+        });
+        return this;
+    };
+}(jQuery));
+
 function saveProperty(property, value)
 {
 	localStorage[property] = value;
@@ -18,14 +33,14 @@ function getOptionsAsJSON()
             linksCount++;
         }
     });
-    var ctrlBtnPos = $("#ctrlBtnPos").attr("checked") === "checked" ? "top" : "bottom";
-    var wrapTitles = $("#wrapTitles").attr("checked") === "checked" ? "yes" : "no";
+    var ctrlBtnPos = $("#ctrlBtnPos").prop("checked") ? "top" : "bottom";
+    var wrapTitles = $("#wrapTitles").prop("checked")  ? "yes" : "no";
     
     var opt = {
         pagesList: links,
         ctrlBtnPos: ctrlBtnPos,
         wrapTitles: wrapTitles
-    }
+    };
     return $.toJSON(opt);
 }
 
@@ -41,7 +56,7 @@ function saveOptions()
 
 function buildTableRow(title, url)
 {
-    var row = $("<tr />").addClass("linkrow")
+    return $("<tr />").addClass("linkrow")
         .append(
             $("<td />").append(
                 $("<input />").attr("type","text").attr("size",25).attr("id","title").attr("value",title).addClass("ui-corner-all").addClass("custInput")
@@ -101,7 +116,6 @@ function buildTableRow(title, url)
                 })
             )
         );
-    return row;
 }
 
 function swapRows(this_row, other_row)
@@ -162,18 +176,18 @@ function processOptions(opt)
     $("button").button();
     
     if (opt.wrapTitles === "yes") {
-        $("#wrapTitles").attr("checked", "checked");
+        $("#wrapTitles").prop("checked", true);
     } else {
-        $("#wrapTitles").removeAttr("checked");
+        $("#wrapTitles").prop("checked", false);
     }
-    $("#wrapTitles").button("refresh");
+    $("#wrapTitles").button().button("refresh");
     
     if (opt.ctrlBtnPos === "top") {
-        $("#ctrlBtnPos").attr("checked", "checked");
+        $("#ctrlBtnPos").prop("checked", true);
     } else {
-        $("#ctrlBtnPos").removeAttr("checked");
+        $("#ctrlBtnPos").prop("checked", false);
     }
-    $("#ctrlBtnPos").button("refresh");
+    $("#ctrlBtnPos").button().button("refresh");
 }
 
 function hideExportImportBlock()
@@ -226,3 +240,52 @@ function startImport()
     }
     hideExportImportBlock();
 }
+
+// ------------------------ window inline --------------------
+document.addEventListener('DOMContentLoaded', function () {
+    $(loadOptions);
+    $(function() {
+        $("#addRow").click(addEmptyTableRow).button({
+            icons: {
+                primary: "ui-icon-plus"
+            },
+            text: false
+        });
+        $("#showHelp").click(function() {
+            $( "#helpDialog" ).dialog( "open" );
+        }).button({
+            icons: {
+                primary: "ui-icon-help"
+            },
+            text: false
+        });
+        hideExportImportBlock();
+        $("#importBtn")
+            .button("option", {
+                icons: { primary: "ui-icon-circle-arrow-s" }})
+            .clickToggle(importSettings,startImport)
+        ;
+        $("#exportBtn")
+            .button("option", {
+                icons: { primary: "ui-icon-circle-arrow-s" }})
+            .clickToggle(exportSettings,hideExportImportBlock)
+        ;
+        $("#btnSaveOptions").click(saveOptions);
+        $("#btnCancel").click(closeWindow);
+
+        // setup dialog for help
+        $( "#helpDialog" ).dialog({
+            title: "Help",
+            autoOpen: false,
+            width: 600,
+            show: {
+                effect: "blind",
+                duration: 1000
+            },
+            hide: {
+                effect: "explode",
+                duration: 1000
+            }
+        });
+    });
+});
