@@ -1,17 +1,17 @@
-// hack as .toggle() was removed from jquery 1.9
-(function($) {
-    $.fn.clickToggle = function(func1, func2) {
-        var funcs = [func1, func2];
-        this.data('toggleclicked', 0);
-        this.click(function() {
-            var data = $(this).data();
-            var tc = data.toggleclicked;
-            $.proxy(funcs[tc], this)();
-            data.toggleclicked = (tc + 1) % 2;
-        });
-        return this;
-    };
-}(jQuery));
+//// hack as .toggle() was removed from jquery 1.9
+//(function($) {
+//    $.fn.clickToggle = function(func1, func2) {
+//        var funcs = [func1, func2];
+//        this.data('toggleclicked', 0);
+//        this.click(function() {
+//            var data = $(this).data();
+//            var tc = data.toggleclicked;
+//            $.proxy(funcs[tc], this)();
+//            data.toggleclicked = (tc + 1) % 2;
+//        });
+//        return this;
+//    };
+//}(jQuery));
 
 function saveProperty(property, value)
 {
@@ -190,55 +190,19 @@ function processOptions(opt)
     $("#ctrlBtnPos").button().button("refresh");
 }
 
-function hideExportImportBlock()
-{
-    $("#exportLabel").hide();
-    $("#importLabel").hide();
-    $("#exportImportField").val("");
-    $("#exportImportBlock").hide();
-    $("#exportBtn").removeAttr("disabled");
-    $("#importBtn").removeAttr("disabled");
-    $("#importBtn").button("option", {
-          icons: { primary: "ui-icon-circle-arrow-s" }
-    });
-    $("#exportBtn").button("option", {
-            icons: { primary: "ui-icon-circle-arrow-s" }
-    });
-}
-
-function exportSettings()
-{
-    hideExportImportBlock();
-    $("#exportImportField").val(getOptionsAsJSON());
-    $("#exportImportBlock").show();
-    $("#exportLabel").show();
-    $("#importBtn").attr("disabled","disabled");
-    $("#exportBtn").button("option", {
-            icons: { primary: "ui-icon-circle-arrow-n" }
-    });
-}
-
-function importSettings()
-{  
-    hideExportImportBlock();
-    $("#exportBtn").attr("disabled","disabled");
-    $("#exportImportBlock").show();
-    $("#importLabel").show();
-    $("#importBtn").button("option", {
-            icons: { primary: "ui-icon-circle-arrow-n" }
-    });
-}
-
 function startImport()
 {
     var raw_opt = $("#exportImportField").val();
+    var success = false;
     try {
         var opt = $.secureEvalJSON(raw_opt);
         processOptions(opt);
+        success = true;
     } catch (ex) {
         alert ("Please, paste exported settings in JSON format into the import field.");
     }
-    hideExportImportBlock();
+    $("#exportImportField").val("");
+    return success;
 }
 
 // ------------------------ window inline --------------------
@@ -259,17 +223,62 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             text: false
         });
-        hideExportImportBlock();
         $("#importBtn")
             .button("option", {
-                icons: { primary: "ui-icon-circle-arrow-s" }})
-            .clickToggle(importSettings,startImport)
-        ;
+                icons: { primary: "ui-icon-circle-arrow-n" }})
+            .click(function(){
+                $("#exportImportField").val("");
+                $("#exportImportBlock").dialog({
+                    title: "Paste settings and press Go for import",
+                    width: 450,
+                    resizable: false,
+                    modal: true,
+                    show: {
+                        effect: "blind",
+                        duration: 1000
+                    },
+                    hide: {
+                        effect: "explode",
+                        duration: 1000
+                    },
+                    buttons: {
+                        Go: function() {
+                            if(startImport())
+                            {
+                                $( this ).dialog( "close" );
+                            }
+                        },
+                        Cancel: function() {
+                            $( this ).dialog( "close" );
+                        }
+                    }
+                });
+            });
         $("#exportBtn")
             .button("option", {
                 icons: { primary: "ui-icon-circle-arrow-s" }})
-            .clickToggle(exportSettings,hideExportImportBlock)
-        ;
+            .click(function(){
+                $("#exportImportField").val(getOptionsAsJSON());
+                $("#exportImportBlock").dialog({
+                    title: "Copy settings for future",
+                    width: 450,
+                    resizable: false,
+                    modal: true,
+                    show: {
+                        effect: "blind",
+                        duration: 1000
+                    },
+                    hide: {
+                        effect: "explode",
+                        duration: 1000
+                    },
+                    buttons: {
+                        Close: function() {
+                            $( this ).dialog( "close" );
+                        }
+                    }
+                });
+            });
         $("#btnSaveOptions").click(saveOptions);
         $("#btnCancel").click(closeWindow);
 

@@ -14,18 +14,26 @@
     <body>
     <div style="display:none;">
         <div id="helpDialog" style="text-align: left;">
-        <p>Macro syntax:</p>
+        <p>Links are support macro syntax:</p>
         <ul>
-            <li>In-flight macroses: look like $!some_macro!$.<br/>
-                Will be replaced by value of "some_macro" parameter of original url query string or with '' if not found.
+            <li><b>In-flight macroses</b>: look like $!some_macro!$.<br/>
+                Will be replaced by value of "some_macro" parameter of original url query string or with empty string if not found.
             </li>
-            <li>Predefined macroses: <br/>
+            <li><b>Predefined macroses: </b><br/>
                 $!{ClipBoard}!$ - replaced with clipboard content <br/>
                 $!{CurrentUrl}!$ - replaced with original url <br/>
                 $!{QueryString}!$ - replaced with query string of original url <br/>
                 $!{Relative}!$ - replaced with relative part of original url <br/>
+                $!{ClipBoardEnc}!$ - replaced with encoded clipboard content <br/>
+                $!{CurrentUrlEnc}!$ - replaced with encoded original url <br/>
+                $!{QueryStringEnc}!$ - replaced with encoded query string of original url <br/>
+                $!{RelativeEnc}!$ - replaced with encoded relative part of original url <br/>
+                <!-- TODO: Make better help -->
             </li>
         </ul>
+        </div>
+        <div id="exportImportBlock">
+            <textarea id="exportImportField" cols="70" rows="10" class="ui-corner-all custInput"></textarea>
         </div>
     </div>
     <div id="options">
@@ -48,11 +56,6 @@
                     <button id="exportBtn" title="Export Settings">Export</button>
                     <button id="importBtn" title="Import Settings">Import</button>
                 </span>
-            </div>
-            <div id="exportImportBlock">
-                <div id="exportLabel">Copy this for future import:</div>
-                <div id="importLabel">Paste exported settings here and press Import button:</div>
-                <textarea id="exportImportField" cols="55" rows="7" class="ui-corner-all custInput"></textarea>
             </div>
             <div>
                 <button id="btnSaveOptions" title="Save options">Save</button>
