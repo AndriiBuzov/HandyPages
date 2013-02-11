@@ -35,24 +35,26 @@ function replaceMacroses(sourceUrl)
     }
     return sourceUrl.replace(/\$\!(.*?)\!\$/g,function(str,p1,s){
         var r = '';
-        if(p1 === '{ClipBoard}')
+        var macro = p1.replace(/\{Encoded\}/g,'');
+        var isEncodeNeeded = p1 != macro;
+        if(macro === '{ClipBoard}')
         {
             var bg = chrome.extension.getBackgroundPage();
             r = bg != undefined ? bg.paste() : '';
-        } else if(p1 === '{CurrentUrl}')
+        } else if(macro === '{CurrentUrl}')
         {
             r = window.hpUrl.attr('source');
-        } else if(p1 === '{QueryString}')
+        } else if(macro === '{QueryString}')
         {
             r = window.hpUrl.attr('query');
-        } else if(p1 === '{Relative}')
+        } else if(macro === '{Relative}')
         {
             r = window.hpUrl.attr('relative');
         } else
         {
-           r =  window.hpUrl.param(p1);
+           r =  window.hpUrl.param(macro);
         }
-        return (r === undefined ? '' : r);
+        return (r === undefined ? '' : (isEncodeNeeded ? encodeURIComponent(r):r));
     });
 }
 
@@ -66,7 +68,7 @@ function buildButton(title, link)
             switch (event.which) {
                 case 1: // left btn
                     isNewTab = false;
-                    // TODO: Deal with non-clothing popup after url changes in tab
+                    // TODO: Deal with non-closing popup after url changes in tab
                     break;
                 case 3: // right btn
                     isNewTab = true;
@@ -76,6 +78,7 @@ function buildButton(title, link)
                 default:
             }
             navigate(getCurrentURL() + replaceMacroses(url), true, isNewTab);
+            closeWindow();
         }
     ).button();
 }

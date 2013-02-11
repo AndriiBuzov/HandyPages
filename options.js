@@ -54,11 +54,11 @@ function saveOptions()
         modal: true,
         show: {
             effect: "blind",
-            duration: 1000
+            duration: 250
         },
         hide: {
             effect: "explode",
-            duration: 1000
+            duration: 250
         },
         buttons: {
             Close: function() {
@@ -249,11 +249,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     modal: true,
                     show: {
                         effect: "blind",
-                        duration: 1000
+                        duration: 250
                     },
                     hide: {
                         effect: "explode",
-                        duration: 1000
+                        duration: 250
                     },
                     buttons: {
                         Go: function() {
@@ -280,11 +280,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     modal: true,
                     show: {
                         effect: "blind",
-                        duration: 1000
+                        duration: 250
                     },
                     hide: {
                         effect: "explode",
-                        duration: 1000
+                        duration: 250
                     },
                     buttons: {
                         Close: function() {
@@ -300,14 +300,14 @@ document.addEventListener('DOMContentLoaded', function () {
         $( "#helpDialog" ).dialog({
             title: "Help",
             autoOpen: false,
-            width: 600,
+            width: 750,
             show: {
                 effect: "blind",
-                duration: 1000
+                duration: 250
             },
             hide: {
                 effect: "explode",
-                duration: 1000
+                duration: 250
             }
         });
     });

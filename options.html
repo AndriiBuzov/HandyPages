@@ -24,13 +24,11 @@
                 $!{CurrentUrl}!$ - replaced with original url <br/>
                 $!{QueryString}!$ - replaced with query string of original url <br/>
                 $!{Relative}!$ - replaced with relative part of original url <br/>
-                $!{ClipBoardEnc}!$ - replaced with encoded clipboard content <br/>
-                $!{CurrentUrlEnc}!$ - replaced with encoded original url <br/>
-                $!{QueryStringEnc}!$ - replaced with encoded query string of original url <br/>
-                $!{RelativeEnc}!$ - replaced with encoded relative part of original url <br/>
                 <!-- TODO: Make better help -->
             </li>
         </ul>
+        <p><b>Note:</b> you can add {Encoded} substring before or after macro name if you want its value to be urlencoded <br />
+            ( e.g. $!{Encoded}{Relative}!$ or $!{Encoded}param1!$ )</p>
         </div>
         <div id="exportImportBlock">
             <textarea id="exportImportField" cols="70" rows="10" class="ui-corner-all custInput"></textarea>
