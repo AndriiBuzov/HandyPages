@@ -47,11 +47,25 @@ function getOptionsAsJSON()
 function saveOptions()
 {
     saveProperty("options", getOptionsAsJSON());
-    
-    $("#status").show();
-    setTimeout(function() {
-        $("#status").hide();
-    }, 1000);
+    $("#confirmSaved").dialog({
+        title: "Options saved",
+        width: 250,
+        resizable: false,
+        modal: true,
+        show: {
+            effect: "blind",
+            duration: 1000
+        },
+        hide: {
+            effect: "explode",
+            duration: 1000
+        },
+        buttons: {
+            Close: function() {
+                $( this ).dialog( "close" );
+            }
+        }
+    });
 }
 
 function buildTableRow(title, url)
