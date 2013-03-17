@@ -14,21 +14,30 @@
     <body>
     <div style="display:none;">
         <div id="helpDialog" style="text-align: left;">
-        <p>Links are support macro syntax:</p>
-        <ul>
-            <li><b>In-flight macroses</b>: look like $!some_macro!$.<br/>
-                Will be replaced by value of "some_macro" parameter of original url query string or with empty string if not found.
-            </li>
-            <li><b>Predefined macroses: </b><br/>
-                $!{ClipBoard}!$ - replaced with clipboard content <br/>
-                $!{CurrentUrl}!$ - replaced with original url <br/>
-                $!{QueryString}!$ - replaced with query string of original url <br/>
-                $!{Relative}!$ - replaced with relative part of original url <br/>
-                <!-- TODO: Make better help -->
-            </li>
-        </ul>
-        <p><b>Note:</b> you can add {Encoded} substring before or after macro name if you want its value to be urlencoded <br />
-            ( e.g. $!{Encoded}{Relative}!$ or $!{Encoded}param1!$ )</p>
+            This extension allows to navigate through a list of predefined pages against current url. <br/>
+            To add a link simply click [+] button and an empty row will appear at the bottom. Enter a name of the link and a link url and hit [Save]. Now you can use your added button in a popup window.
+            <p>Links are support macro syntax:</p>
+            <ul>
+                <li><b>In-flight macroses</b>: look like $!some_macro!$.<br/>
+                    Will be replaced by value of "some_macro" parameter of original url query string or with empty string if not found.
+                </li>
+                <li><b>Predefined macroses: </b><br/>
+                    $!{ClipBoard}!$ - replaced with clipboard content <br/>
+                    $!{CurrentUrl}!$ - replaced with original url <br/>
+                    $!{QueryString}!$ - replaced with query string of original url <br/>
+                    $!{Relative}!$ - replaced with relative part of original url <br/>
+                    <!-- TODO: Make better help -->
+                </li>
+            </ul>
+            <p>
+                <b>Note:</b> you can add {Encoded} substring before or after macro name if you want its value to be urlencoded <br />
+                ( e.g. $!{Encoded}{Relative}!$ or $!{Encoded}param1!$ )
+            </p>
+            <p>
+                You can use [Control buttons at the top] button to move [Options] and [Close] buttons in the popup window from bottom to top.<br/>
+                You can use [Wrap long titles] button if you want a popup window to have a fixed width. By default a width of popup window is defined by the widest link title.<br/>
+                Also you can use [Export] and [Import] buttons to export/import your settings accordingly. Settings are exported and imported in JSON format.
+            </p>
         </div>
         <div id="exportImportBlock">
             <textarea id="exportImportField" cols="70" rows="10" class="ui-corner-all custInput"></textarea>

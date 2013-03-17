@@ -55,26 +55,25 @@ function replaceMacroses(sourceUrl)
            r =  window.hpUrl.param(macro);
         }
         return (r === undefined ? '' : (isEncodeNeeded ? encodeURIComponent(r):r));
+        //TODO: support {EncodedIfNot} macro
     });
 }
 
 function buildButton(title, link)
 {
     var url = (link[0] === '/') ? link : '/' + link;
-    return $("<div>" + title + "</div>").addClass("navbtn").mousedown(
+    return $("<div>" + title + "</div>").addClass("navbtn").mouseup(
         function(event)
         {
             var isNewTab = false;
             switch (event.which) {
                 case 1: // left btn
                     isNewTab = false;
-                    // TODO: Deal with non-closing popup after url changes in tab
                     break;
                 case 3: // right btn
                     isNewTab = true;
                     event.preventDefault(); // hack to hide context menu after right-click
                     break;
-                    // TODO: Deal with context menu on newly opened page when mouse up
                 default:
             }
             navigate(getCurrentURL() + replaceMacroses(url), true, isNewTab);
