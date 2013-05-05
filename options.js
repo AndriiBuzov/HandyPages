@@ -1,18 +1,3 @@
-//// hack as .toggle() was removed from jquery 1.9
-//(function($) {
-//    $.fn.clickToggle = function(func1, func2) {
-//        var funcs = [func1, func2];
-//        this.data('toggleclicked', 0);
-//        this.click(function() {
-//            var data = $(this).data();
-//            var tc = data.toggleclicked;
-//            $.proxy(funcs[tc], this)();
-//            data.toggleclicked = (tc + 1) % 2;
-//        });
-//        return this;
-//    };
-//}(jQuery));
-
 function saveProperty(property, value)
 {
 	localStorage[property] = value;
@@ -33,12 +18,10 @@ function getOptionsAsJSON()
             linksCount++;
         }
     });
-    var ctrlBtnPos = $("#ctrlBtnPos").prop("checked") ? "top" : "bottom";
     var wrapTitles = $("#wrapTitles").prop("checked")  ? "yes" : "no";
     
     var opt = {
         pagesList: links,
-        ctrlBtnPos: ctrlBtnPos,
         wrapTitles: wrapTitles
     };
     return $.toJSON(opt);
@@ -195,13 +178,6 @@ function processOptions(opt)
         $("#wrapTitles").prop("checked", false);
     }
     $("#wrapTitles").button().button("refresh");
-    
-    if (opt.ctrlBtnPos === "top") {
-        $("#ctrlBtnPos").prop("checked", true);
-    } else {
-        $("#ctrlBtnPos").prop("checked", false);
-    }
-    $("#ctrlBtnPos").button().button("refresh");
 }
 
 function startImport()
@@ -248,12 +224,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     resizable: false,
                     modal: true,
                     show: {
-                        effect: "blind",
-                        duration: 250
+                        effect: "clip"
                     },
                     hide: {
-                        effect: "explode",
-                        duration: 250
+                        effect: "clip"
                     },
                     buttons: {
                         Go: function() {
@@ -279,12 +253,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     resizable: false,
                     modal: true,
                     show: {
-                        effect: "blind",
-                        duration: 250
+                        effect: "clip"
                     },
                     hide: {
-                        effect: "explode",
-                        duration: 250
+                        effect: "clip"
                     },
                     buttons: {
                         Close: function() {
@@ -302,12 +274,10 @@ document.addEventListener('DOMContentLoaded', function () {
             autoOpen: false,
             width: 750,
             show: {
-                effect: "blind",
-                duration: 250
+                effect: "clip"
             },
             hide: {
-                effect: "explode",
-                duration: 250
+                effect: "clip"
             }
         });
     });

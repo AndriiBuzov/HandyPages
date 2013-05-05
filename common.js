@@ -9,7 +9,7 @@ function readProperty(property, defValue)
 
 function getDefaultOptions()
 {
-    return '{"pagesList":[{"url":"folder1/page1.html","title":"Page 1"},{"url":"/ahother_folder/page2.php?act=show","title":"Page 2"},{"url":"/page.html","title":"Page 3"}],"ctrlBtnPos":"bottom","wrapTitles":"no"}';
+    return '{"pagesList":[{"url":"folder1/page1.html","title":"Page 1"},{"url":"/ahother_folder/page2.php?act=show","title":"Page 2"},{"url":"/page.html","title":"Page 3"}],"wrapTitles":"no"}';
 }
 
 function closeWindow()

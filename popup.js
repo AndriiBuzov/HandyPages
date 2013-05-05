@@ -55,14 +55,13 @@ function replaceMacroses(sourceUrl)
            r =  window.hpUrl.param(macro);
         }
         return (r === undefined ? '' : (isEncodeNeeded ? encodeURIComponent(r):r));
-        //TODO: support {EncodedIfNot} macro
     });
 }
 
 function buildButton(title, link)
 {
     var url = (link[0] === '/') ? link : '/' + link;
-    return $("<div>" + title + "</div>").addClass("navbtn").mouseup(
+    return $("<div>" + title + "</div>").css('margin-right','10px').css('min-width','80px').addClass("navbtn").mouseup(
         function(event)
         {
             var isNewTab = false;
@@ -86,6 +85,13 @@ function init()
 {
     var opt = $.secureEvalJSON(readProperty("options",getDefaultOptions()));
     var maxWidth = 0;
+    $('#links').slimScroll({
+        position: 'right',
+        height: '250px',
+        railVisible: true,
+        alwaysVisible: true,
+        distance: '0px'
+    });
     for(var i = 0; i < opt.pagesList.length; i++)
     {
         var btn = buildButton(opt.pagesList[i].title, opt.pagesList[i].url);
@@ -102,11 +108,6 @@ function init()
     $(".navbtn").each(function() {
         $(this).width(maxWidth);
     });
-    if ( opt.ctrlBtnPos === "top" ) {
-        $("#links").before($("#ctrlPanel"));
-    }
-    //hack for prevent blinking when control buttons shown on the top
-    $("body").height($("body").height());
 }
 
 // ----------------------------------- window inline script -----------------------------------------------
