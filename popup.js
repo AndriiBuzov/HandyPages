@@ -85,9 +85,14 @@ function init()
 {
     var opt = $.secureEvalJSON(readProperty("options",getDefaultOptions()));
     var maxWidth = 0;
+    var maxHeight = 550; //assuming max popup size is 600px for chrome, set div to 550 to avoid body scrollbar
+    if((window.screen.availHeight - window.screenY) <= maxHeight)
+    {
+        maxHeight = Math.round((window.screen.availHeight - window.screenY) * 0.75);
+    }
+    $('#links').css('padding-top','3px').css('padding-bottom','3px').css('max-height', maxHeight+'px');
     $('#links').slimScroll({
         position: 'right',
-        height: '250px',
         railVisible: true,
         alwaysVisible: true,
         distance: '0px'
