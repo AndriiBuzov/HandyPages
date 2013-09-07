@@ -476,7 +476,7 @@ button.ui-button::-moz-focus-inner {
 	position: relative;
 }
 .ui-dialog .ui-dialog-title {
-	float: left;
+/*anbu	float: left;*/
 	margin: .1em 0;
 	white-space: nowrap;
 	width: 90%;
