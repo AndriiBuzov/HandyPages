@@ -33,8 +33,9 @@ function saveOptions()
     $("#confirmSaved").dialog({
         title: "Options saved",
         width: 250,
+        height: 100,
         resizable: false,
-        modal: true,
+        modal: false,
         show: {
             effect: "blind",
             duration: 250
@@ -42,18 +43,18 @@ function saveOptions()
         hide: {
             effect: "explode",
             duration: 250
-        },
-        buttons: {
-            Close: function() {
-                $( this ).dialog( "close" );
-            }
         }
-    });
+    }).delay(500).fadeOut(function(){ $(this).dialog("close") });
 }
 
 function buildTableRow(title, url)
 {
     return $("<tr />").addClass("linkrow")
+        .append(
+            $("<td />").attr("align","center").attr("title","drag to move").append(
+                $("<span />").addClass("ui-icon").addClass("ui-icon-arrowthick-2-n-s")
+            )
+        )
         .append(
             $("<td />").append(
                 $("<input />").attr("type","text").attr("size",25).attr("id","title").attr("value",title).addClass("ui-corner-all").addClass("custInput")
@@ -76,54 +77,7 @@ function buildTableRow(title, url)
                     text: false
                 })
             )
-        )
-        .append(
-            $("<td />").append(
-                $("<button>x</button>").attr("title","Move up").click(function() {
-                    var rowToMove = $(this).parents('tr.linkrow:first');
-                    var prev = rowToMove.prev('tr.linkrow')
-                    if (prev.length == 1) 
-                    { 
-                        swapRows(rowToMove, prev);
-                    }
-                })
-                .button({
-                    icons: {
-                        primary: "ui-icon-triangle-1-n"
-                    },
-                    text: false
-                })
-            )
-        )
-        .append(
-            $("<td />").append(
-                $("<button>x</button>").attr("title","Move down").click(function() {
-                    var rowToMove = $(this).parents('tr.linkrow:first');
-                    var next = rowToMove.next('tr.linkrow')
-                    if (next.length == 1) 
-                    { 
-                        swapRows(rowToMove, next); 
-                    }
-                })
-                .button({
-                    icons: {
-                        primary: "ui-icon-triangle-1-s"
-                    },
-                    text: false
-                })
-            )
         );
-}
-
-function swapRows(this_row, other_row)
-{  
-    var tmp = getTitleFromRow(this_row);
-    setTitleForRow(this_row, getTitleFromRow(other_row));
-    setTitleForRow(other_row, tmp);
-    
-    tmp = getUrlFromRow(this_row);
-    setUrlForRow(this_row, getUrlFromRow(other_row));
-    setUrlForRow(other_row, tmp);
 }
 
 function getUrlFromRow(row)
@@ -134,16 +88,6 @@ function getUrlFromRow(row)
 function getTitleFromRow(row)
 {
     return row.find('input[id^="title"]:first').val().trim();
-}
-
-function setUrlForRow(row, url)
-{
-    row.find('input[id^="url"]:first').val(url);
-}
-
-function setTitleForRow(row, title)
-{
-    row.find('input[id^="title"]:first').val(title);
 }
 
 function addTableRow(title, url)
@@ -169,6 +113,9 @@ function processOptions(opt)
     {
         addTableRow(opt.pagesList[i].title, opt.pagesList[i].url);
     }
+    $("#linksTable").sortable({
+      distance: 30
+    }).disableSelection();
     
     $("button").button();
     

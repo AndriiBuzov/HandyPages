@@ -1,6 +1,6 @@
 {
   "name": "Handy Pages",
-  "version": "0.3",
+  "version": "0.3.1",
   "manifest_version": 2,
   "description": "Provides an easy-way navigation to configurable list of URLs on server.",
   "icons": {
