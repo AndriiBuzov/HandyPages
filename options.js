@@ -19,8 +19,12 @@ function getOptionsAsJSON()
         pagesList: links,
         wrapTitles: wrapTitles
     };
-    // return $.toJSON(opt);
     return opt;
+}
+
+function getOptionsAsJSONString()
+{
+    return $.toJSON(getOptionsAsJSON());
 }
 
 function saveOptions()
@@ -163,7 +167,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 $("#exportImportField").val("");
                 $("#exportImportBlock").dialog({
                     title: "Paste settings and press Go for import",
-                    width: 450,
+                    width: 475,
                     resizable: false,
                     modal: true,
                     show: {
@@ -189,10 +193,10 @@ document.addEventListener('DOMContentLoaded', async function () {
             .button("option", {
                 icons: { primary: "ui-icon-circle-arrow-s" }})
             .click(function(){
-                $("#exportImportField").val(getOptionsAsJSON());
+                $("#exportImportField").val(getOptionsAsJSONString());
                 $("#exportImportBlock").dialog({
                     title: "Copy settings for future",
-                    width: 450,
+                    width: 475,
                     resizable: false,
                     modal: true,
                     show: {

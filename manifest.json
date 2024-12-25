@@ -15,7 +15,8 @@
   "permissions": [
     "storage",
     "tabs",
-    "clipboardRead"
+    "clipboardRead",
+    "offscreen"
   ],
 
   "content_security_policy": {
