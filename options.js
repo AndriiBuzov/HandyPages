@@ -1,8 +1,3 @@
-function saveProperty(property, value)
-{
-	localStorage[property] = value;
-}
-
 function getOptionsAsJSON()
 {
     var links = new Array();
@@ -19,17 +14,22 @@ function getOptionsAsJSON()
         }
     });
     var wrapTitles = $("#wrapTitles").prop("checked")  ? "yes" : "no";
-    
-    var opt = {
+
+    let opt = {
         pagesList: links,
         wrapTitles: wrapTitles
     };
-    return $.toJSON(opt);
+    return opt;
+}
+
+function getOptionsAsJSONString()
+{
+    return $.toJSON(getOptionsAsJSON());
 }
 
 function saveOptions()
 {
-    saveProperty("options", getOptionsAsJSON());
+    saveOptionsToStore(getOptionsAsJSON());
     $("#confirmSaved").dialog({
         title: "Options saved",
         width: 250,
@@ -100,10 +100,10 @@ function addEmptyTableRow()
     addTableRow("","");
 }
 
-function loadOptions()
+async function loadOptions()
 {
-    var opt = $.secureEvalJSON(readProperty("options",getDefaultOptions()));
-    processOptions(opt);
+    const res = await getOptions(getDefaultOptions());
+    processOptions(res);
 }
 
 function processOptions(opt) 
@@ -129,10 +129,10 @@ function processOptions(opt)
 
 function startImport()
 {
-    var raw_opt = $("#exportImportField").val();
-    var success = false;
+    let raw_opt = $("#exportImportField").val();
+    let success = false;
     try {
-        var opt = $.secureEvalJSON(raw_opt);
+        let opt = secureParseJSON(raw_opt);
         processOptions(opt);
         success = true;
     } catch (ex) {
@@ -143,8 +143,8 @@ function startImport()
 }
 
 // ------------------------ window inline --------------------
-document.addEventListener('DOMContentLoaded', function () {
-    $(loadOptions);
+document.addEventListener('DOMContentLoaded', async function () {
+    await loadOptions();
     $(function() {
         $("#addRow").click(addEmptyTableRow).button({
             icons: {
@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 $("#exportImportField").val("");
                 $("#exportImportBlock").dialog({
                     title: "Paste settings and press Go for import",
-                    width: 450,
+                    width: 475,
                     resizable: false,
                     modal: true,
                     show: {
@@ -193,10 +193,10 @@ document.addEventListener('DOMContentLoaded', function () {
             .button("option", {
                 icons: { primary: "ui-icon-circle-arrow-s" }})
             .click(function(){
-                $("#exportImportField").val(getOptionsAsJSON());
+                $("#exportImportField").val(getOptionsAsJSONString());
                 $("#exportImportBlock").dialog({
                     title: "Copy settings for future",
-                    width: 450,
+                    width: 475,
                     resizable: false,
                     modal: true,
                     show: {

@@ -24,47 +24,60 @@ function showOptions()
 	navigate("options.html", true, true);
 }
 
-/*
-* Macroses are wrapped with ! and $ signs: '$!macro!$'
-* */
-function replaceMacroses(sourceUrl)
-{
-    if(window.hpUrl == undefined)
-    {
-        return sourceUrl;
-    }
-    return sourceUrl.replace(/\$\!(.*?)\!\$/g,function(str,p1,s){
-        var r = '';
-        var macro = p1.replace(/\{Encoded\}/g,'');
-        var isEncodeNeeded = p1 != macro;
-        if(macro === '{ClipBoard}')
-        {
-            var bg = chrome.extension.getBackgroundPage();
-            r = bg != undefined ? bg.paste() : '';
-        } else if(macro === '{CurrentUrl}')
-        {
-            r = window.hpUrl.attr('source');
-        } else if(macro === '{QueryString}')
-        {
-            r = window.hpUrl.attr('query');
-        } else if(macro === '{Relative}')
-        {
-            r = window.hpUrl.attr('relative');
-        } else
-        {
-           r =  window.hpUrl.param(macro);
+// Built-in macro handlers
+const builtInMacroHandlers = {
+    "{ClipBoard}": async () => { const res = await navigator.clipboard.readText(); return res; },
+    "{CurrentUrl}": async () => window.hpUrl.attr('source'),
+    "{Relative}": async () => window.hpUrl.attr('relative'),
+    "{QueryString}": async () => window.hpUrl.attr('query'),
+};
+
+async function replaceMacros(inputString, macroHandlers) {
+    // Create a regex pattern dynamically for all known macros and unknown ones
+    const macroRegex = /\$!(.*?)!\$/g;
+
+    // Split string into parts and find all macros
+    const parts = inputString.split(macroRegex); // Includes macros as split points
+    const matches = inputString.match(macroRegex) || []; // Find all macros in the input string
+
+    // Fetch replacements for each macro
+    const replacements = await Promise.all(
+        matches.map(async macro => {
+            const key = macro.match(/\$!(.*?)!\$/)?.[1]; // Extract macro name
+            const extractedMacro = key.replace(/\{Encoded\}/g,'');
+            const isEncodeNeeded = key !== extractedMacro;
+            if (macroHandlers[extractedMacro]) {
+                // Use the specific handler if available
+                const res = await macroHandlers[extractedMacro]();
+                return isEncodeNeeded ? encodeURIComponent(res):res;
+            } else {
+                // Assume macro as query parameter value
+                const res = window.hpUrl.param(macro);
+                return res === undefined ? '' : isEncodeNeeded ? encodeURIComponent(res):res;
+            }
+        })
+    );
+
+    // Reconstruct the string
+    let result = '';
+    let replacementIndex = 0;
+    for (let i = 0; i < parts.length; i++) {
+        if (!matches.includes(`$!${parts[i]}!$`)) { // include part in the result as is only if it is not a matched macro
+            result += parts[i];
+        } else if (replacementIndex < replacements.length) { // replace with corresponding macro match otherwise
+            result += replacements[replacementIndex++];
         }
-        return (r === undefined ? '' : (isEncodeNeeded ? encodeURIComponent(r):r));
-    });
+    }
+    return result;
 }
 
 function buildButton(title, link)
 {
-    var url = (link[0] === '/') ? link : '/' + link;
+    let url = (link[0] === '/') ? link : '/' + link;
     return $("<div>" + title + "</div>").css('margin-right','10px').css('min-width','80px').addClass("navbtn").mouseup(
-        function(event)
+        async function(event)
         {
-            var isNewTab = false;
+            let isNewTab = false;
             switch (event.which) {
                 case 1: // left btn
                     isNewTab = false;
@@ -75,15 +88,16 @@ function buildButton(title, link)
                     break;
                 default:
             }
-            navigate(getCurrentURL() + replaceMacroses(url), true, isNewTab);
+            const replacedUrl = await replaceMacros(url, builtInMacroHandlers)
+            navigate(getCurrentURL() + replacedUrl, true, isNewTab);
             closeWindow();
         }
     ).button();
 }
 
-function init()
+async function init()
 {
-    var opt = $.secureEvalJSON(readProperty("options",getDefaultOptions()));
+    const opt = await getOptions(getDefaultOptions());
     var maxWidth = 0;
     var maxHeight = 550; //assuming max popup size is 600px for chrome, set div to 550 to avoid body scrollbar
     //hack for low-resolutions. assuming it makes sense if screen has less than 650 px height
@@ -118,14 +132,12 @@ function init()
 
 // ----------------------------------- window inline script -----------------------------------------------
 window.addEventListener("load", windowLoaded, false);
-function windowLoaded() {
-    chrome.tabs.getSelected(null, function(tab) {
-        window.hpUrl = $.url(tab.url);
-        window.hpCurrentIndex = tab.index;
-        window.hpCurrentID = tab.id;
-        console.log(tab.id);
-        console.log(tab.url);
-        console.log(tab.index);
+async function windowLoaded() {
+        chrome.tabs.query({ active: true, currentWindow: true },
+        function(tabsArray) {
+            window.hpUrl = $.url(tabsArray[0].url);
+            window.hpCurrentIndex = tabsArray[0].index;
+            window.hpCurrentID = tabsArray[0].id;
     });
 }
 document.addEventListener('DOMContentLoaded', function () {
